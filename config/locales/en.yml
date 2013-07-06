@@ -1,0 +1,7 @@
+# English strings go here for Rails i18n
+en:
+  menu_label_ashiato: "ashiato"
+  label_ashiato_updated_on: "date"
+  label_ashiato_type: "category"
+  label_ashiato_title: "link"
+  label_user_ashiato: "%{value}'s ashiato"

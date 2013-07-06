@@ -1,0 +1,36 @@
+<h2><%= @author.nil? ? l(:label_ashiato) : l(:label_user_ashiato, link_to_user(@author)).html_safe %></h2>
+
+<div id="activity">
+<dl>
+<% @ashiato.each do |row| -%>
+  <dt class="<%= row['ashiato_type'] %>">
+  <%= avatar(@author, :size => "24") %>
+  <span class="time"><%= format_time(row['updated_on']) %></span>
+  <span><%= row['ashiato_type'] %>-<%= h(row['project_name']) %>:</span>
+  <% if row['ashiato_type'] == 'issue' %>
+    <%= link_to(h(row['title']), :controller => 'issues', :action => 'show', :id => row['id']) %>
+  <% elsif row['ashiato_type'] == 'wiki-page' %>
+    <%= link_to(h(row['title']), :controller => 'wiki', :project_id => row['project_id'], :action => 'show', :id => row['title']) %>
+  <% elsif row['ashiato_type'] == 'message' %>
+    <%= link_to(h(row['title']), :controller => 'messages', :board_id => row['board_id'], :action => 'show', :id => row['id']) %>
+  <% end %>
+  </dt>
+<% end -%>
+</dl>
+</div>
+
+<% content_for :sidebar do %>
+<%= form_tag({}, :method => :get) do %>
+<h3><%= l(:label_ashiato) %></h3>
+<p><% @event_types.each do |t| %>
+
+<%= check_box_tag "show_#{t}", 1, @event_types_inc.include?(t) %>
+<label for="show_<%=t%>"><%= link_to(l("label_#{t.singularize}_plural"), {"show_#{t}" => 1, :user_id => params[:user_id], :from => params[:from]})%></label>
+<br />
+<% end %></p>
+<%= hidden_field_tag('user_id', params[:user_id]) unless params[:user_id].blank? %>
+<p><%= submit_tag l(:button_apply), :class => 'button-small', :name => nil %></p>
+<% end %>
+<% end %>
+
+<% html_title(l(:label_ashiato), @author) -%>

@@ -1,0 +1,9 @@
+<% if User.current && controller.action_name == 'show' %>
+ <% if controller.class.name == 'IssuesController' %>
+  <% ashiato_register('issue', @issue.id) if @issue %>
+ <% elsif controller.class.name == 'WikiController' %>
+  <% ashiato_register('wiki-page', @page.id) if @page %>
+ <% elsif controller.class.name == 'MessagesController' %>
+  <% ashiato_register('message', @message.id) if @message %>
+ <% end %>
+<% end %>

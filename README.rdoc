@@ -1,29 +1,38 @@
-= redmine_ashiato
+= Redmine Ashiato
 
-Description goes here
+あしあとを残すプラグインです。
 
-DB(watchersのパクリ)
-+----------------+--------------+------+-----+---------+----------------+
-| Field          | Type         | Null | Key | Default | Extra          |
-+----------------+--------------+------+-----+---------+----------------+
-| id             | int(11)      | NO   | PRI | NULL    | auto_increment |
-| ashiato_type   | varchar(255) | NO   |     |         |                |
-| ashiato_id     | int(11)      | NO   | MUL | 0       |                |
-| updated_at     | timestamp    | NO   | MUL | 0       |                |
-| user_id        | int(11)      | YES  | MUL | NULL    |                |
-+----------------+--------------+------+-----+---------+----------------+
 
-登録の流れ
-１．カテゴリ毎にトリガー発生
-　２．[user_id][ashiato_type]+[ashiato_id]で一致するかどうか
-　　一致したら
-　　　そのレコードのupdated_atを更新
-　　一致しなかったら
-　　　そのレコードを追加
 
-　３．[user_id][ashiato_type]で件数チェック
-　　MAX以上なら、１件削除
+= 動作確認バージョン
 
-取得時の流れ
-※タブ切り替えを想定
-１．カテゴリタブ毎に[user_id][ashiato_type]で検索。updated_atでソート
+Redmine-2.3.1
+
+Redmine-2.3 以上はOK。それ以前は動作保証しません
+
+
+= インストール
+
+1. 「$RAILS_ROOT/plugins」にダウンロード
+2. railsルートで「rake db:migrate:upgrade_plugin_migrations RAILS_ENV=production」を実行
+3. Redmineを再起動
+
+
+= 使い方
+
+以下のアクションを行うと自動であしあとに登録されます
+
+- チケット詳細表示
+
+- フォーラムメッセージ表示
+
+- Wikiページ表示
+
+トップニューに「あしあと」が追加されますので、そこからあしあと表示できます
+
+
+= バージョン
+
+== version 0.0.1
+
+- first commit

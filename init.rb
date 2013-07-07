@@ -6,7 +6,7 @@ Redmine::Plugin.register :redmine_ashiato do
   author 'toritori0318'
   description 'This is a ashiato plugin for Redmine'
   version '0.0.1'
-  url 'http://example.com/path/to/plugin'
+  url 'https://github.com/toritori0318/redmine_ashiato'
   author_url 'http://example.com/about'
 
   # menu

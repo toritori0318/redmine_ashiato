@@ -6,19 +6,13 @@ class AshiatoApplicationHooks < Redmine::Hook::ViewListener
   render_on :view_layouts_base_body_bottom, :partial => 'ashiato/hook'
 end
 
-SAVE_COUNT = 10
+SAVE_COUNT = 30
 
 def ashiato_register(ashiato_type, ashiato_id)
-  @ashiato_all = Ashiato.all(
-      :conditions => ['user_id=? AND ashiato_type=?', User.current, ashiato_type],
-      :order => ['updated_on DESC'],
+  @ashiato = Ashiato.find(
+      :first,
+      :conditions => ['user_id=? AND ashiato_type=? AND ashiato_id=?', User.current, ashiato_type, ashiato_id],
   )
-  @ashiato_all.each do |row|
-    if row.ashiato_id == ashiato_id then
-      @ashiato = row
-      break
-    end
-  end
 
   if !@ashiato
     Ashiato.create!(:user_id => User.current.id,
@@ -26,8 +20,21 @@ def ashiato_register(ashiato_type, ashiato_id)
                    :ashiato_id => ashiato_id,
                    :updated_on => DateTime.now,
                    )
-    if @ashiato_all.length >= SAVE_COUNT then
-      @ashiato_all.last.delete
+    ashiato_count = Ashiato.count(
+      :conditions => ['user_id=?', User.current],
+    )
+    if ashiato_count >= SAVE_COUNT then
+      sql = <<"SQL"
+DELETE FROM ashiato
+WHERE (user_id, updated_on) in (
+    SELECT * FROM (
+      SELECT user_id, MIN(updated_on) FROM ashiato
+      WHERE user_id = ?
+      GROUP BY user_id
+    )iv1
+  )
+SQL
+      ActiveRecord::Base.connection.delete(ActiveRecord::Base.send('sanitize_sql_array', [sql, User.current.id]))
     end
   else
     @ashiato.updated_on = DateTime.now

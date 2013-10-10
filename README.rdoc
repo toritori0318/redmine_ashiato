@@ -33,6 +33,10 @@ Redmine-2.3 以上はOK。それ以前は動作保証しません
 
 = バージョン
 
+== version 0.0.2
+
+- Fixed wikipage bug.
+
 == version 0.0.1
 
 - first commit

@@ -6,9 +6,9 @@
 
 = 動作確認バージョン
 
-Redmine-2.3.1
+Redmine-3.3.0 (0.1.0)
 
-Redmine-2.3 以上はOK。それ以前は動作保証しません
+Redmine-2.3 以上はOK。それ以前のバージョンは0.0.2をお使いください
 
 
 = インストール
@@ -32,6 +32,10 @@ Redmine-2.3 以上はOK。それ以前は動作保証しません
 
 
 = バージョン
+
+== version 0.1.0
+
+- Support for Redmine3.x.x.
 
 == version 0.0.2
 

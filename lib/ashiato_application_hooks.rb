@@ -9,20 +9,17 @@ end
 SAVE_COUNT = 30
 
 def ashiato_register(ashiato_type, ashiato_id)
-  @ashiato = Ashiato.find(
-      :first,
-      :conditions => ['user_id=? AND ashiato_type=? AND ashiato_id=?', User.current, ashiato_type, ashiato_id],
-  )
+  @ashiato = Ashiato.
+    where(:user_id => User.current.id, :ashiato_type => ashiato_type, :ashiato_id => ashiato_id).
+    first 
 
-  if !@ashiato
+  if @ashiato.nil?
     Ashiato.create!(:user_id => User.current.id,
                    :ashiato_type => ashiato_type,
                    :ashiato_id => ashiato_id,
                    :updated_on => DateTime.now,
                    )
-    ashiato_count = Ashiato.count(
-      :conditions => ['user_id=?', User.current],
-    )
+    ashiato_count = Ashiato.where(:user_id => User.current.id).count
     if ashiato_count >= SAVE_COUNT then
       sql = <<"SQL"
 DELETE FROM ashiato

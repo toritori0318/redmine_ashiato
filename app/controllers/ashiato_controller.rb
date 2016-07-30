@@ -63,7 +63,7 @@ SQL
 SQL
     end
 
-    sql = sprintf("SELECT * FROM (%s) iv ORDER BY updated_on DESC", sqls.join("UNION ALL"))
+    sql = sprintf("SELECT * FROM (%s) iv WHERE id is not null ORDER BY updated_on DESC", sqls.join("UNION ALL"))
     binds = []
     sqls.length.times { binds.push(User.current.id) }
     ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send('sanitize_sql_array', [sql, *binds]))
